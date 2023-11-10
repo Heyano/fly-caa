@@ -13,7 +13,7 @@ const routes: Routes = [
     component:LayoutComponent,
     children: [
       {
-        path:"",
+        path:"home",
         loadChildren:()=>import("./features/home/home.module").then(m=>m.HomeModule)
       }
     ]
