@@ -1,6 +1,6 @@
 import { APP_ROOT } from './frontend.root';
 
-export const BASE_URL = 'hospotic.com/';
+export const BASE_URL = 'caa.cervea.com/';
 export const PREFIX = 'https://';
 export const ROUTE_APP = 'app';
 export const ROUTE_CONFIG = 'config';
@@ -12,9 +12,9 @@ export const URL_MAIN_LOCAL = 'http://localhost:5100/';
 export const URL_MAIN_LOCAL_SOCKET = 'http://localhost:5100/';
 
 export const URL_PROD = {
-  baseUrl: 'https://api.hospotic.com/api/v1/',
-  baseUrlFiles: 'https://api.hospotic.com/uploads/',
-  baseUrlPdfs: 'https://api.hospotic.com/pdfs/',
+  baseUrl: 'https://caa.cervea.com/api/v1/',
+  baseUrlFiles: 'https://caa.cervea.com/uploads/',
+  baseUrlPdfs: 'https://caa.cervea.com/pdfs/',
 };
 
 export const URL_TEST = {

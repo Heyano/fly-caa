@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   day: string = '0';
   date: string = '0';
   typeAirplane: string = '';
+  loaded: boolean = false;
   constructor(private mainService: MainService) {}
   ngOnInit(): void {
     this.params['status[ne]'] = 'Deleted';
@@ -56,12 +57,14 @@ export class HomeComponent implements OnInit {
       next: (res: QueryResultsModel) => {
         if (res.success) {
           this.flights = res.data;
+          this.loaded = true;
         }
       },
     });
   }
 
   //search tender
+
   search(): void {
     this.params['status[ne]'] = 'Deleted';
     if (this.departure && this.departure != '0') {
@@ -95,5 +98,11 @@ export class HomeComponent implements OnInit {
     }
 
     this.getFligh();
+  }
+
+  getDay(): string {
+    const day = this.days.find(el=> el._id = this.day)
+    if(day) return day.label;
+    return "";
   }
 }
