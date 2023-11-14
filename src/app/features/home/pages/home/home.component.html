@@ -7,34 +7,39 @@
 
   <div class="row">
     <div class="col-md-3">
-      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="departure">
-        <option selected value="0">Départ / Departure</option>
+      <label for="">Départ / Departure</label>
+      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="departure" (change)="search()">
+        <option selected value="0">Tout</option>
         <option *ngFor="let city of cities" value="{{city._id}}">{{city.label}}</option>
       </select>
     </div>
     <div class="col-md-3">
-      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="arrival">
-        <option selected value="0">Arrivé / Arrival</option>
+      <label for="">Arrivé / Arrival</label>
+      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="arrival" #cityArrival (change)="search()">
+        <option selected value="0">Tout</option>
         <option *ngFor="let city of cities" value="{{city._id}}">{{city.label}}</option>
       </select>
     </div>
-    <div *ngIf="false" class="col-md-2">
-      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="day">
-        <option selected value="0"> Jour / Days</option>
-        <option *ngFor="let day of days" value="{{day._id}}">{{day.label}}</option>
+    <div class="col-md-3">
+      <label for="">Type d'avion/ Aircraft Type</label>
+
+      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="typeAirplane" (change)="search()">
+        <option selected value="0"> Tout</option>
+        <option *ngFor="let typeAircraft of typeAircrafts" value="{{typeAircraft._id}}">{{typeAircraft.label}}</option>
 
       </select>
     </div>
-    <div class="col-md-2">
-      <input type="date" class="form-control" id="floatingInputValue"
-             placeholder="10/11/23" value="10/11/23"
-             [(ngModel)]="date">
+    <div class="col-md-3">
+      <label for="">Date</label>
+      <div class="card flex justify-content-center">
+        <p-calendar [(ngModel)]="dates" selectionMode="multiple" [readonlyInput]="true"></p-calendar>
+      </div>
     </div>
-    <div class="col-md-2">
-      <button style="border-radius: 5px; padding: 7px 30px" type="button"
-              class="btn btn-danger" (click)="search()">
-        Valider
-      </button>
+    <div class="col-md-12">
+      <div class="text-center">
+        <!-- <h3 class="mt-4"> Résultats de la recherche de vols : {{cityArrival}} vers {{departure}}
+                </h3> -->
+      </div>
     </div>
   </div>
 
@@ -46,7 +51,7 @@
       <table *ngIf="flights && flights.length > 0" class="table table-bordered border-primary">
         <thead>
           <tr>
-            <th >Type d'avion/<br>Aircraft Type</th>
+            <th>Type d'avion/<br>Aircraft Type</th>
             <th>Numéro de vol/<br>Fly number</th>
             <th>Départ/<br>Departure</th>
             <th>Arrivé/<br>Arrival</th>
@@ -58,7 +63,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let flight of flights">
-            <td><span *ngIf="flight?.typeAirplane?.aicraftType">{{flight.typeAirplane.aicraftType}}</span></td>
+            <td><span *ngIf="flight?.typeAirplane?.aicraftType">{{flight.typeAirplane.label}}</span></td>
             <td>{{flight.codeObject}}</td>
             <td *ngIf="flight?.departure?.label">{{flight.departure.label}}</td>
             <td *ngIf="flight?.arrival">{{flight.arrival.label}}</td>

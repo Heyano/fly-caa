@@ -4,6 +4,7 @@ import { DayModel } from 'src/app/core/models/day.model';
 import { FlightModel } from 'src/app/core/models/flight.model';
 import { QueryResultsModel } from 'src/app/core/models/query-result.model';
 import {
+  API_AIRCRAFT_TYPE_ROOT,
   API_CITY_ROOT,
   API_DAY_ROOT,
   API_FLIGHT_ROOT,
@@ -17,13 +18,17 @@ import { MainService } from 'src/app/core/services/main.service';
 })
 export class HomeComponent implements OnInit {
   cities: CityModel[] = [];
+  dates: Date[] | undefined;
   days: DayModel[] = [];
   flights: FlightModel[] = [];
+  typeAircrafts: any[] = [];
   params: any = {};
+  typeAircraft: string = '';
   departure: string = '0';
   arrival: string = '0';
   day: string = '0';
   date: string = '0';
+  cityDeparture: string = '';
   typeAirplane: string = '';
   loaded: boolean = false;
   constructor(private mainService: MainService) {}
@@ -32,12 +37,22 @@ export class HomeComponent implements OnInit {
     this.getCities();
     this.getDays();
     this.getFligh();
+    this.getTypeAircraft();
   }
   getCities() {
     this.mainService.getAll(this.params, API_CITY_ROOT).subscribe({
       next: (res: QueryResultsModel) => {
         if (res.success) {
           this.cities = res.data;
+        }
+      },
+    });
+  }
+  getTypeAircraft() {
+    this.mainService.getAll(this.params, API_AIRCRAFT_TYPE_ROOT).subscribe({
+      next: (res: QueryResultsModel) => {
+        if (res.success) {
+          this.typeAircrafts = res.data;
         }
       },
     });
@@ -73,9 +88,7 @@ export class HomeComponent implements OnInit {
     if (this.arrival && this.arrival != '0') {
       this.params.arrival = this.arrival;
     }
-    if (this.day && this.day != '0') {
-      this.params.day = this.day;
-    }
+
     if (this.typeAirplane && this.typeAirplane != '0') {
       this.params.typeAirplane = this.typeAirplane;
     }
@@ -83,26 +96,17 @@ export class HomeComponent implements OnInit {
       this.params.date = this.date;
     }
 
-    if (
-      this.arrival == '0' &&
-      this.departure == '0' &&
-      this.day == '0' &&
-      this.typeAirplane == '0' &&
-      this.date == '0'
-    ) {
-      delete this.params.typeAirplane;
-      delete this.params.day;
-      delete this.params.arrival;
-      delete this.params.departure;
-      delete this.params.date;
-    }
+    if (this.arrival == '0') delete this.params.arrival;
+    if (this.departure == '0') delete this.params.departure;
+    if (this.typeAirplane == '0') delete this.params.typeAirplane;
+    if (this.date == '0') delete this.params.date;
 
     this.getFligh();
   }
 
   getDay(): string {
-    const day = this.days.find(el=> el._id = this.day)
-    if(day) return day.label;
-    return "";
+    const day = this.days.find((el) => (el._id = this.day));
+    if (day) return day.label;
+    return '';
   }
 }
