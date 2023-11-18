@@ -15,13 +15,13 @@
     </div>
     <div class="col-md-3">
       <label for="">Arrivé / Arrival</label>
-      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="arrival" #cityArrival (change)="search()">
+      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="arrival" (change)="search()">
         <option selected value="0">Tout</option>
         <option *ngFor="let city of cities" value="{{city._id}}">{{city.label}}</option>
       </select>
     </div>
-    <div class="col-md-3">
-      <label for="">Type d'avion/ Aircraft Type</label>
+    <div class="col-md-2">
+      <label for="">Type d'avion</label>
 
       <select class="form-control" style="border-radius: 5px;" [(ngModel)]="typeAirplane" (change)="search()">
         <option selected value="0"> Tout</option>
@@ -29,10 +29,11 @@
 
       </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <label for="">Date</label>
       <div class="card flex justify-content-center">
-        <p-calendar [(ngModel)]="dates" selectionMode="multiple" [readonlyInput]="true"></p-calendar>
+        <p-calendar [(ngModel)]="date" selectionMode="multiple" [readonlyInput]="true"
+          (ngModelChange)="search()"></p-calendar>
       </div>
     </div>
     <div class="col-md-12">
@@ -44,40 +45,20 @@
   </div>
 
   <div class="row" style="margin: 40px 0; align-items: center">
-    <div *ngIf="false" class="col-md-12 " style="text-align: center; margin-top: 25px!important;">
-      <p>{{ date | date : "dd-MM-yyyy"}}</p>
+    <div *ngIf="true" class="col-md-12 " style="text-align: center; margin-top: 25px!important;">
+
+
+      <!-- <p>{{ date | date : "dd-MM-yyyy"}}</p> -->
     </div>
     <div class="col-md-12" style="padding: 0 !important;">
-      <table *ngIf="flights && flights.length > 0" class="table table-bordered border-primary">
-        <thead>
-          <tr>
-            <th>Type d'avion/<br>Aircraft Type</th>
-            <th>Numéro de vol/<br>Fly number</th>
-            <th>Départ/<br>Departure</th>
-            <th>Arrivé/<br>Arrival</th>
-            <th>Heure de départ/<br>Departure time</th>
-            <th>Heure d'arrivé/<br>Arrival time</th>
-            <th>Bloc time</th>
-            <th>Allotement</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let flight of flights">
-            <td><span *ngIf="flight?.typeAirplane?.aicraftType">{{flight.typeAirplane.label}}</span></td>
-            <td>{{flight.codeObject}}</td>
-            <td *ngIf="flight?.departure?.label">{{flight.departure.label}}</td>
-            <td *ngIf="flight?.arrival">{{flight.arrival.label}}</td>
-            <td>{{flight.departureTime}}</td>
-            <td>{{flight.timeArrived}}</td>
-            <td>{{flight.blockTime}}</td>
-            <td></td>
-          </tr>
+      <div *ngFor="let fg of flightsGrouped">
+        <h1>{{ fg.label}}</h1>
+        <app-home-flight-table [flights]="fg.flights"></app-home-flight-table>
+      </div>
 
-        </tbody>
-      </table>
       <div style="margin-top: 100px"></div>
 
-      <div *ngIf="flights && flights.length == 0 && loaded" style="text-align: center">
+      <div *ngIf="flightsGrouped && flightsGrouped.length == 0 && loaded" style="text-align: center">
         <h2>Aucun vol trouvé</h2>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
+import { HomeFlightTableComponent } from './components/home-flight-table/home-flight-table.component';
 const routes: Routes = [
   {
     path: '',
@@ -12,7 +13,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, HomeFlightTableComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

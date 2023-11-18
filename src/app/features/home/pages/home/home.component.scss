@@ -1,3 +1,9 @@
-th{
+th {
   font-size: 12px !important;
+}
+
+::ng-deep {
+  .p-calendar {
+    width: 100% !important
+  }
 }

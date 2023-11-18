@@ -1,0 +1,29 @@
+<table *ngIf="flights && flights.length > 0" class="table table-bordered border-primary">
+  <thead>
+    <tr>
+      <th>Type d'avion/<br>Aircraft Type</th>
+      <th>Numéro de vol/<br>Fly number</th>
+      <th>Départ/<br>Departure</th>
+      <th>Arrivé/<br>Arrival</th>
+      <th>Heure de départ/<br>Departure time</th>
+      <th>Heure d'arrivé/<br>Arrival time</th>
+      <th>Bloc time</th>
+      <th>Date</th>
+      <th>Allotement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let flight of flights">
+      <td><span *ngIf="flight?.typeAirplane?.aicraftType">{{flight.typeAirplane.label}}</span></td>
+      <td>{{flight.codeObject}}</td>
+      <td *ngIf="flight?.departure?.label">{{flight.departure.label}}</td>
+      <td *ngIf="flight?.arrival">{{flight.arrival.label}}</td>
+      <td>{{flight.departureTime}}</td>
+      <td>{{flight.timeArrived}}</td>
+      <td>{{flight.blockTime}}</td>
+      <td>{{flight.date | date:"MMM-dd-yyy"}}</td>
+      <td></td>
+    </tr>
+
+  </tbody>
+</table>

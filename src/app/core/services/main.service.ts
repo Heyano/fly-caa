@@ -18,6 +18,9 @@ export class MainService {
    * @param params
    */
   getAll(params: any = {}, url: string): Observable<QueryResultsModel> {
+    console.log('pars');
+    console.log(params);
+
     return this.http.get<QueryResultsModel>(URL_API.baseUrl + url, { params });
   }
 
