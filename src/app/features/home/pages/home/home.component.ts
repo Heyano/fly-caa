@@ -18,26 +18,26 @@ import { MainService } from 'src/app/core/services/main.service';
 })
 export class HomeComponent implements OnInit {
   cities: CityModel[] = [];
-  dates: Date[] | undefined;
+  dates: Date[] = [];
   days: DayModel[] = [];
   flights: FlightModel[] = [];
   typeAircrafts: any[] = [];
   params: any = {};
   typeAircraft: string = '';
-  departure: any;
+  departure: string = '0';
   arrival: string = '0';
   day: string = '0';
-  date: any[] = [];
-  cityDeparture: string = '';
-  typeAirplane: string = '';
+  cityDeparture: any = '';
+  cityArrival: any = '';
+  typeAirplane: string = '0';
   loaded: boolean = false;
   flightsGrouped: any[] = [];
   constructor(private mainService: MainService) {}
   ngOnInit(): void {
     this.params['status[ne]'] = 'Deleted';
+    this.getFligh();
     this.getCities();
     this.getDays();
-    this.getFligh();
     this.getTypeAircraft();
   }
   getCities() {
@@ -72,21 +72,16 @@ export class HomeComponent implements OnInit {
     this.mainService.getAll(this.params, API_FLIGHT_ROOT).subscribe({
       next: (res: QueryResultsModel) => {
         if (res.success) {
+          if (this.dates.length == 0) {
+            const datesArray: any = res.data.map((item) => new Date(item.date));
+            const maxDate = new Date(Math.max.apply(null, datesArray));
+            this.dates.push(maxDate);
+          }
+
           const flights = res.data;
           this.flightsGrouped = [];
 
-          /*
-           [
-
-            {
-              label : "20-06-2023",
-              filghts : []
-            }
-           ]
-
-          */
-
-          for (let date of this.date) {
+          for (let date of this.dates) {
             let dateSelected = new Date(date);
             flights.forEach((el) => {
               let dateFlight = new Date(el.date);
@@ -137,23 +132,33 @@ export class HomeComponent implements OnInit {
     this.params['status[ne]'] = 'Deleted';
     if (this.departure && this.departure != '0') {
       this.params.departure = this.departure;
+      this.cityDeparture = this.cities.find(
+        (item) => item._id == this.departure
+      );
     }
     if (this.arrival && this.arrival != '0') {
       this.params.arrival = this.arrival;
+      this.cityArrival = this.cities.find((item) => item._id == this.arrival);
     }
 
     if (this.typeAirplane && this.typeAirplane != '0') {
       this.params.typeAirplane = this.typeAirplane;
     }
 
-    console.log('this.data', this.date);
-    if (this.date) {
-      this.params['date[in]'] = this.date;
+    console.log('this.data', this.dates);
+    if (this.dates) {
+      this.params['date[in]'] = this.dates;
     }
-    if (this.arrival == '0') delete this.params.arrival;
-    if (this.departure == '0') delete this.params.departure;
+    if (this.arrival == '0') {
+      delete this.params.arrival;
+      this.cityArrival = {};
+    }
+    if (this.departure == '0') {
+      delete this.params.departure;
+      this.cityDeparture = {};
+    }
     if (this.typeAirplane == '0') delete this.params.typeAirplane;
-    if (!this.date) delete this.params.date;
+    if (!this.dates) delete this.params.dates;
     this.getFligh();
   }
 
@@ -186,5 +191,13 @@ export class HomeComponent implements OnInit {
     };
 
     this.flightsGrouped.sort(processing);
+  }
+
+  getFomateDate(label: any): any {
+    const date = label.toString().split('-');
+    const dateFomate = date[2] + '-' + date[1] + '-' + date[0];
+    const newDate = new Date(dateFomate);
+    newDate.setMonth(newDate.getMonth() + 1);
+    return newDate;
   }
 }

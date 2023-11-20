@@ -20,7 +20,7 @@
         <option *ngFor="let city of cities" value="{{city._id}}">{{city.label}}</option>
       </select>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
       <label for="">Type d'avion</label>
 
       <select class="form-control" style="border-radius: 5px;" [(ngModel)]="typeAirplane" (change)="search()">
@@ -29,10 +29,10 @@
 
       </select>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <label for="">Date</label>
       <div class="card flex justify-content-center">
-        <p-calendar [(ngModel)]="date" selectionMode="multiple" [readonlyInput]="true"
+        <p-calendar [(ngModel)]="dates" selectionMode="multiple" [readonlyInput]="true"
           (ngModelChange)="search()"></p-calendar>
       </div>
     </div>
@@ -45,21 +45,32 @@
   </div>
 
   <div class="row" style="margin: 40px 0; align-items: center">
-    <div *ngIf="true" class="col-md-12 " style="text-align: center; margin-top: 25px!important;">
+    <div *ngIf="flightsGrouped && flightsGrouped.length != 0" class="col-md-12 "
+      style="text-align: center; margin-top: 25px!important;">
 
 
-      <!-- <p>{{ date | date : "dd-MM-yyyy"}}</p> -->
+      <div *ngIf="cityArrival.label || cityDeparture.label">
+        <div *ngIf="cityArrival.label && cityDeparture.label">
+          <h2>Vols de {{cityDeparture.label}} à {{cityArrival.label}}</h2>
+        </div>
+        <div *ngIf="cityDeparture.label && !cityArrival.label">
+          <h2>Vols depuis {{cityDeparture.label}} vers toutes les villes</h2>
+        </div>
+        <div *ngIf="cityArrival.label && !cityDeparture.label">
+          <h2>Toutes les villes à destination {{cityArrival.label}}</h2>
+        </div>
+      </div>
     </div>
     <div class="col-md-12" style="padding: 0 !important;">
       <div *ngFor="let fg of flightsGrouped">
-        <h1>{{ fg.label}}</h1>
+        <h3 class="text-center">{{ getFomateDate(fg.label)| date:"dd MMMM yyy"}}</h3>
         <app-home-flight-table [flights]="fg.flights"></app-home-flight-table>
       </div>
 
-      <div style="margin-top: 100px"></div>
 
       <div *ngIf="flightsGrouped && flightsGrouped.length == 0 && loaded" style="text-align: center">
-        <h2>Aucun vol trouvé</h2>
+        <i class="icon-airplane text-danger" style="font-size: 80px;"></i>
+        <h2 class="text-primary">Aucun vol trouvé</h2>
       </div>
     </div>
   </div>
