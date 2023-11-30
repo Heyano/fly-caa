@@ -14,7 +14,7 @@
       </select>
     </div>
     <div class="col-md-3">
-      <label for="">Arrivé / Arrival</label>
+      <label for="">Arrivée / Arrival</label>
       <select class="form-control" style="border-radius: 5px;" [(ngModel)]="arrival" (change)="search()">
         <option selected value="0">Tout</option>
         <option *ngFor="let city of cities" value="{{city._id}}">{{city.label}}</option>
@@ -32,10 +32,13 @@
     <div class="col-md-3">
       <label for="">Date</label>
       <div class="card flex justify-content-center">
-        <p-calendar [(ngModel)]="dates" selectionMode="multiple" [readonlyInput]="true"
-          (ngModelChange)="search()"></p-calendar>
+        <p-calendar #dateField [(ngModel)]="dates" styleClass="p-button-help" selectionMode="multiple"
+          dateFormat="dd/mm/yy" [readonlyInput]="true" [showIcon]="true" [showClear]="true" (onClear)="clearDate()"
+          (onSelect)="search()"></p-calendar>
       </div>
+
     </div>
+
     <div class="col-md-12">
       <div class="text-center">
         <!-- <h3 class="mt-4"> Résultats de la recherche de vols : {{cityArrival}} vers {{departure}}
@@ -62,11 +65,17 @@
       </div>
     </div>
     <div class="col-md-12" style="padding: 0 !important;">
-      <div *ngFor="let fg of flightsGrouped">
-        <h3 class="text-center">{{ getFomateDate(fg.label)| date:"dd MMMM yyy"}}</h3>
-        <app-home-flight-table [flights]="fg.flights"></app-home-flight-table>
-      </div>
+      <div *ngIf="dates.length!=0">
+        <div *ngFor="let fg of flightsGrouped">
+          <h3 class="text-center">{{ getFomateDate(fg.label)| date:"dd MMMM yyy"}}</h3>
+          <app-home-flight-table [flights]="fg.flights"></app-home-flight-table>
+        </div>
 
+      </div>
+      <div *ngIf="dates.length==0" class="text-center">
+        <i class=" icon-calendar3 text-danger" style="font-size: 60px;color: #ccc;"></i>
+        <h2 style="color: #ccc;">Aucune date sélectionnée</h2>
+      </div>
 
       <div *ngIf="flightsGrouped && flightsGrouped.length == 0 && loaded" style="text-align: center">
         <i class="icon-airplane text-danger" style="font-size: 80px;"></i>

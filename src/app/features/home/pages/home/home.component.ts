@@ -200,4 +200,8 @@ export class HomeComponent implements OnInit {
     newDate.setMonth(newDate.getMonth() + 1);
     return newDate;
   }
+  clearDate() {
+    delete this.params['date[in]'];
+    this.dates = [];
+  }
 }
