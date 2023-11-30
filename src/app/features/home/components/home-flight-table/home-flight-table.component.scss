@@ -1,0 +1,30 @@
+th {
+  font-size: 13px !important; font-weight: 200;
+  border:5px solid #fff !important;
+}
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+/* Appliquer une couleur de fond différente aux lignes paires */
+tr:nth-child(even) {
+  background-color: #ffeeec; /* Couleur de fond pour les lignes paires */
+  border:5px solid #fff !important;
+}
+
+/* Appliquer une couleur de fond différente aux lignes impaires */
+tr:nth-child(odd) {
+  background-color: #ffd9dd; /* Couleur de fond pour les lignes impaires */
+  border:5px solid #fff !important;
+}
+
+/* Ajouter une bordure aux cellules pour améliorer la lisibilité */
+td {
+  padding: 8px;
+  text-align: left;
+  border:5px solid #fff !important;
+}
