@@ -12,4 +12,5 @@ export class FlightModel extends MainModel {
   date: string = '';
   blockTime: string = '';
   typeAirplane: AircraftTypeModel = new AircraftTypeModel();
+  allotement: any;
 }

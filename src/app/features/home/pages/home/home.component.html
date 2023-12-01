@@ -1,42 +1,45 @@
-<div class="container" style="margin-top: 40px">
+<div class="container" >
   <div class="row">
     <div class="col-md-12" style="margin: 50px 0; text-align: center">
-      <h1>Horaire de vol</h1>
+      <div style="font-size:40px">Horaire de vol</div>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-3">
-      <label for="">Départ / Departure</label>
-      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="departure" (change)="search()">
+      <label for="departure" style="font-weight: 100">Départ / Departure</label>
+      <select id="departure" class="form-control" style="border-radius: 5px;" [(ngModel)]="departure" (change)="search()">
         <option selected value="0">Tout</option>
         <option *ngFor="let city of cities" value="{{city._id}}">{{city.label}}</option>
       </select>
     </div>
     <div class="col-md-3">
-      <label for="">Arrivée / Arrival</label>
-      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="arrival" (change)="search()">
+      <label for="arrival" style="font-weight: 100">Arrivée / Arrival</label>
+      <select id="arrival" class="form-control" style="border-radius: 5px;" [(ngModel)]="arrival" (change)="search()">
         <option selected value="0">Tout</option>
         <option *ngFor="let city of cities" value="{{city._id}}">{{city.label}}</option>
       </select>
     </div>
-    <div class="col-md-3">
-      <label for="">Type d'avion</label>
+    <div class="col-md-2">
+      <label for="typeAirplane" style="font-weight: 100">Type d'avion</label>
 
-      <select class="form-control" style="border-radius: 5px;" [(ngModel)]="typeAirplane" (change)="search()">
+      <select id="typeAirplane" class="form-control" style="border-radius: 5px;" [(ngModel)]="typeAirplane" (change)="search()">
         <option selected value="0"> Tout</option>
         <option *ngFor="let typeAircraft of typeAircrafts" value="{{typeAircraft._id}}">{{typeAircraft.label}}</option>
 
       </select>
     </div>
     <div class="col-md-3">
-      <label for="">Date</label>
+      <label for="date" style="font-weight: 100">Date</label>
       <div class="card flex justify-content-center">
-        <p-calendar #dateField [(ngModel)]="dates" styleClass="p-button-help" selectionMode="multiple"
+        <p-calendar id="date" #dateField [(ngModel)]="dates" styleClass="p-button-help" selectionMode="range"
           dateFormat="dd/mm/yy" [readonlyInput]="true" [showIcon]="true" [showClear]="true" (onClear)="clearDate()"
-          (onSelect)="search()"></p-calendar>
+          (onSelect)="selectDate()"></p-calendar>
       </div>
 
+    </div>
+    <div class="col-md-1">
+      <button style="margin-top: 25px; border-radius: 5px;" class="btn btn-md btn-danger "><i class="icon-search"></i></button>
     </div>
 
     <div class="col-md-12">

@@ -1,15 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { CityModel } from 'src/app/core/models/city.model';
-import { DayModel } from 'src/app/core/models/day.model';
-import { FlightModel } from 'src/app/core/models/flight.model';
-import { QueryResultsModel } from 'src/app/core/models/query-result.model';
-import {
-  API_AIRCRAFT_TYPE_ROOT,
-  API_CITY_ROOT,
-  API_DAY_ROOT,
-  API_FLIGHT_ROOT,
-} from 'src/app/core/routes/backend.root';
-import { MainService } from 'src/app/core/services/main.service';
+import {Component, OnInit} from '@angular/core';
+import {CityModel} from 'src/app/core/models/city.model';
+import {DayModel} from 'src/app/core/models/day.model';
+import {FlightModel} from 'src/app/core/models/flight.model';
+import {QueryResultsModel} from 'src/app/core/models/query-result.model';
+import {API_AIRCRAFT_TYPE_ROOT, API_CITY_ROOT, API_DAY_ROOT, API_FLIGHT_ROOT,} from 'src/app/core/routes/backend.root';
+import {MainService} from 'src/app/core/services/main.service';
 
 @Component({
   selector: 'app-home',
@@ -32,14 +27,19 @@ export class HomeComponent implements OnInit {
   typeAirplane: string = '0';
   loaded: boolean = false;
   flightsGrouped: any[] = [];
-  constructor(private mainService: MainService) {}
+  isOneDate : boolean = true;
+
+  constructor(private mainService: MainService) {
+  }
+
   ngOnInit(): void {
     this.params['status[ne]'] = 'Deleted';
-    this.getFligh();
+    this.getFlight();
     this.getCities();
     this.getDays();
     this.getTypeAircraft();
   }
+
   getCities() {
     this.mainService.getAll(this.params, API_CITY_ROOT).subscribe({
       next: (res: QueryResultsModel) => {
@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit {
       },
     });
   }
+
   getTypeAircraft() {
     this.mainService.getAll(this.params, API_AIRCRAFT_TYPE_ROOT).subscribe({
       next: (res: QueryResultsModel) => {
@@ -58,6 +59,7 @@ export class HomeComponent implements OnInit {
       },
     });
   }
+
   getDays() {
     this.mainService.getAll(this.params, API_DAY_ROOT).subscribe({
       next: (res: QueryResultsModel) => {
@@ -68,7 +70,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getFligh() {
+  getFlight(): void {
     this.mainService.getAll(this.params, API_FLIGHT_ROOT).subscribe({
       next: (res: QueryResultsModel) => {
         if (res.success) {
@@ -80,9 +82,19 @@ export class HomeComponent implements OnInit {
 
           const flights = res.data;
           this.flightsGrouped = [];
+          let datesArray : Date[] = [];
+          if(this.isOneDate){
+            datesArray = [new Date()]
+          }else{
+            const startDate = this.getDateFormatted(new Date(this.dates[0]));
+            const endDate = this.getDateFormatted(new Date(this.dates[1]));
+            datesArray = this.generateDates(startDate,endDate)
+          }
 
-          for (let date of this.dates) {
-            let dateSelected = new Date(date);
+          console.log("recherche", datesArray);
+
+          for (let dateSelected of datesArray) {
+
             flights.forEach((el) => {
               let dateFlight = new Date(el.date);
 
@@ -129,37 +141,7 @@ export class HomeComponent implements OnInit {
   //search tender
 
   search(): void {
-    this.params['status[ne]'] = 'Deleted';
-    if (this.departure && this.departure != '0') {
-      this.params.departure = this.departure;
-      this.cityDeparture = this.cities.find(
-        (item) => item._id == this.departure
-      );
-    }
-    if (this.arrival && this.arrival != '0') {
-      this.params.arrival = this.arrival;
-      this.cityArrival = this.cities.find((item) => item._id == this.arrival);
-    }
 
-    if (this.typeAirplane && this.typeAirplane != '0') {
-      this.params.typeAirplane = this.typeAirplane;
-    }
-
-    console.log('this.data', this.dates);
-    if (this.dates) {
-      this.params['date[in]'] = this.dates;
-    }
-    if (this.arrival == '0') {
-      delete this.params.arrival;
-      this.cityArrival = {};
-    }
-    if (this.departure == '0') {
-      delete this.params.departure;
-      this.cityDeparture = {};
-    }
-    if (this.typeAirplane == '0') delete this.params.typeAirplane;
-    if (!this.dates) delete this.params.dates;
-    this.getFligh();
   }
 
   getDay(): string {
@@ -200,8 +182,101 @@ export class HomeComponent implements OnInit {
     newDate.setMonth(newDate.getMonth() + 1);
     return newDate;
   }
+
   clearDate() {
     delete this.params['date[in]'];
     this.dates = [];
+  }
+
+
+  filterSearch() {
+    this.params['status[ne]'] = 'Deleted';
+
+    if (this.departure && this.departure != '0') {
+      this.params.departure = this.departure;
+      this.cityDeparture = this.cities.find(
+        (item) => item._id == this.departure
+      );
+    }
+
+
+    if (this.arrival && this.arrival != '0') {
+      this.params.arrival = this.arrival;
+      this.cityArrival = this.cities.find((item) => item._id == this.arrival);
+    }
+
+    if (this.typeAirplane && this.typeAirplane != '0') {
+      this.params.typeAirplane = this.typeAirplane;
+    }
+
+    console.log('this.data', this.dates);
+    const date = new Date()
+
+
+    if (this.arrival == '0') {
+      delete this.params.arrival;
+      this.cityArrival = {};
+    }
+    if (this.departure == '0') {
+      delete this.params.departure;
+      this.cityDeparture = {};
+    }
+    if (this.typeAirplane == '0') delete this.params.typeAirplane;
+    if (!this.dates) delete this.params.dates;
+    this.getFlight();
+  }
+
+
+  selectDate() {
+    console.log("data", this.dates);
+
+    const dates = this.dates.filter(el => el != null);
+
+    if (dates && dates.length == 1) {
+      this.params['date[gte]'] = this.getDateFormatted(dates[0]);
+      this.isOneDate = true;
+      this.getFlight();
+    }else
+    if(dates && dates.length == 2)
+    {
+      this.isOneDate = false;
+      this.params['date[gte]'] = this.getDateFormatted(dates[0]);
+      this.params['date[lte]'] = this.getDateFormatted(dates[1]);
+      this.getFlight()
+    }
+
+  }
+
+  getDateFormatted(date: Date): string {
+    const d = new Date(date);
+    const month = d.getMonth() + 1
+    const m = month > 9 ? month : "0" + month;
+    const day = d.getDate() > 9 ? d.getDate() : "0" + d.getDate();
+   return d.getFullYear() + "-" + m + "-" + day;
+  }
+
+  generateDates(startDate: string, endDate: string): Date[] {
+    // Convertir les chaînes de date en objets Date
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Vérifier si les dates sont valides
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      console.error("Dates invalides");
+      return [];
+    }
+
+    const dateArray = [];
+
+    // Boucle jusqu'à ce que la date de départ soit inférieure ou égale à la date de fin
+    while (start <= end) {
+      // Ajouter la date actuelle au tableau
+      dateArray.push(new Date(start));
+
+      // Incrémenter la date de départ d'un jour
+      start.setDate(start.getDate() + 1);
+    }
+
+    return dateArray;
   }
 }
