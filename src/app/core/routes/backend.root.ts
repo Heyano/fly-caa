@@ -57,7 +57,9 @@ export const API_DAY = 'day';
 export const API_DAY_ROOT = CAA + '/' + API_DAY;
 
 export const API_FLIGHT = 'flight';
+export const API_TIMETABLE = 'timetable';
 export const API_FLIGHT_ROOT = CAA + '/' + API_FLIGHT;
+export const API_TIMETABLE_ROOT = CAA + '/' + API_TIMETABLE;
 
 export const API_AIRCRAFT_TYPE = 'aircraft-type';
 export const API_AIRCRAFT_TYPE_ROOT = CAA + '/' + API_AIRCRAFT_TYPE;

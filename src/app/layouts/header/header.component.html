@@ -37,13 +37,8 @@
         </div>
         <div class="col-xs-10 text-right menu-1">
           <ul>
-            <li class="active"><a routerLink="home" href="javasript">Accueil</a></li>
-            <li><a href="javasript">Horaires</a></li>
-            <li><a href="javasript">Destinations</a></li>
-            <li><a href="javasript">Réservation en ligne</a></li>
-            <li><a href="javasript">Accès agents</a></li>
-            <li><a href="javasript">Programme de fidelité</a></li>
-            <li><a href="javasript">Cargo</a></li>
+            <li><a class="{{ currentUrl == '/app'? 'active' : '' }}" href="javascript:" (click)="goHoraire()">Horaires</a></li>
+            <li><a class="{{ currentUrl == '/app/flight'? 'active' : '' }}" href="javascript:" (click)="goFlight()">Vols</a></li>
 
           </ul>
         </div>

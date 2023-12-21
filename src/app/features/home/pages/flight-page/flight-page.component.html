@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="row" style="margin: 40px 0; align-items: center">
+    <div class="col-md-12" style="text-align: end">
+      <div>Filtrer par situation du vol</div>
+      <p-dropdown [options]="['Tout','J-1','J-J','J+1']"
+                  [(ngModel)]="situationFlight"
+                  (ngModelChange)="selectFilter()"
+                   [showClear]="true" ></p-dropdown>
+
+    </div>
+
+    <div class="col-md-12" style="padding: 0 !important;">
+
+      <table *ngIf="flights && flights.length > 0" class="table table-bordered border-primary">
+        <thead>
+        <tr style="background:#e0350d; color:white; font-size: 12px !important;">
+          <th>Type d'avion</th>
+          <th>N° Vol</th>
+          <th>Départ</th>
+          <th>Arrivé</th>
+          <th>Décollage prévu</th>
+          <th>Atterrissage prévu</th>
+          <th>Décollage réel</th>
+          <th>Atterrissage réel</th>
+          <th>Statut du vol</th>
+          <th>Situation vol</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let flight of flights; let i = index">
+          <ng-container>
+            <!-- New Aircraft Type or First Row -->
+            <tr>
+              <td>{{flight.aircraftType.label}}</td>
+              <td>{{flight.flightNumber}}</td>
+              <td *ngIf="flight?.departure?.label">{{flight.departure.label}}</td>
+              <td *ngIf="flight?.arrival">{{flight.arrival.label}}</td>
+              <td>{{flight.departureDate | date: 'dd-MM-yyyy'}} {{flight.departureTime}}</td>
+              <td>{{flight.arrivalDate | date: 'dd-MM-yyyy'}} {{flight.arrivalTime}}</td>
+              <td>{{flight.departureDateReal | date: 'dd-MM-yyyy'}} {{flight.departureTimeReal}}</td>
+              <td>{{flight.arrivalDateReal | date: 'dd-MM-yyyy'}} {{flight.arrivalTimeReal}}</td>
+              <td>{{flight.statutFlight}}</td>
+              <td>{{flight.situationFlight}}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        </tbody>
+      </table>
+
+      <div style="margin-top: 30px" *ngIf="flights && flights.length == 0" class="alert alert-danger">
+        Aucun element trouvé
+      </div>
+    </div>
+  </div>
+</div>

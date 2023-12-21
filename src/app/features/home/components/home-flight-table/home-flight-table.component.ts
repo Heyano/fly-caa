@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FlightModel } from 'src/app/core/models/flight.model';
+import { TimetableModel } from 'src/app/core/models/timetable.model';
 
 @Component({
   selector: 'app-home-flight-table',
@@ -7,13 +7,13 @@ import { FlightModel } from 'src/app/core/models/flight.model';
   styleUrls: ['./home-flight-table.component.scss'],
 })
 export class HomeFlightTableComponent {
-  @Input('flights') flights: FlightModel[] = [];
+  @Input('timetables') timetables: TimetableModel[] = [];
 
-  getColspan(flights: any[], currentIndex: number): number {
+  getColspan(timetables: any[], currentIndex: number): number {
     let count = 1;
     let i = currentIndex - 1;
 
-    while (i >= 0 && flights[currentIndex].typeAirplane.aicraftType === flights[i].typeAirplane.aicraftType) {
+    while (i >= 0 && timetables[currentIndex].typeAirplane.aicraftType === timetables[i].typeAirplane.aicraftType) {
       count++;
       i--;
     }
@@ -21,12 +21,12 @@ export class HomeFlightTableComponent {
     return count;
   }
 
-  getRowCount(flights: any[], currentIndex: number): number {
+  getRowCount(timetables: any[], currentIndex: number): number {
     let count = 1;
     let i = currentIndex + 1;
-    console.log("lui", flights[currentIndex].typeAirplane.label)
+    console.log("lui", timetables[currentIndex].typeAirplane.label)
 
-    while (i < flights.length && flights[currentIndex].typeAirplane.label === flights[i].typeAirplane.label) {
+    while (i < timetables.length && timetables[currentIndex].typeAirplane.label === timetables[i].typeAirplane.label) {
       count++;
       i++;
     }

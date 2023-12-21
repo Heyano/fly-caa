@@ -1,4 +1,6 @@
-<table *ngIf="flights && flights.length > 0" class="table table-bordered border-primary">
+
+
+<table *ngIf="timetables && timetables.length > 0" class="table table-bordered border-primary">
   <thead>
     <tr style="background:#e0350d; color:white; font-size: 12px !important;">
       <th>AIRCRAFT TYPE </th>
@@ -12,18 +14,18 @@
     </tr>
   </thead>
   <tbody>
-  <ng-container *ngFor="let flight of flights; let i = index">
-    <ng-container *ngIf="i === 0 || flight.typeAirplane.label !== flights[i - 1].typeAirplane.label">
+  <ng-container *ngFor="let timetable of timetables; let i = index">
+    <ng-container >
       <!-- New Aircraft Type or First Row -->
       <tr>
-        <td>{{flight.typeAirplane.label}}</td>
-        <td>{{flight.codeObject}}</td>
-        <td *ngIf="flight?.departure?.label">{{flight.departure.label}}</td>
-        <td *ngIf="flight?.arrival">{{flight.arrival.label}}</td>
-        <td>{{flight.departureTime}}</td>
-        <td>{{flight.timeArrived}}</td>
-        <td>{{flight.blockTime}}</td>
-        <td>{{flight.allotement}}</td>
+        <td>{{timetable.typeAirplane.label}}</td>
+        <td>{{timetable.numberFlay}}</td>
+        <td *ngIf="timetable?.departure?.label">{{timetable.departure.label}}</td>
+        <td *ngIf="timetable?.arrival">{{timetable.arrival.label}}</td>
+        <td>{{timetable.departureTime}}</td>
+        <td>{{timetable.timeArrived}}</td>
+        <td>{{timetable.blockTime}}</td>
+        <td>{{timetable.allotement}}</td>
       </tr>
     </ng-container>
   </ng-container>

@@ -2,15 +2,21 @@
 <div class="row" style="margin: 40px 0; align-items: center">
 
   <div class="col-md-12" style="padding: 0 !important;">
-    <div >
-      <div *ngFor="let fg of flightsGrouped" style="margin-top: 100px">
-        <h3 class="text-center">{{fg.label}} - {{ getDayEnglish(fg.label) }}</h3>
-        <app-home-flight-table [flights]="fg.flights"></app-home-flight-table>
-      </div>
-
+    <div style="text-align: right">
+      <button [disabled]="loading"  (click)="importPdf()" class="btn btn-md btn-danger">
+        <span *ngIf="loading" class="spinner-border" style="width:15px; height: 15px">...</span>
+        Importer en PDF
+      </button>
     </div>
 
-    <div *ngIf="flightsGrouped && flightsGrouped.length == 0 && loaded" style="text-align: center">
+    <div #dataToExport id="dataToExport">
+      <div *ngFor="let fg of timetablesGrouped" style="margin-top: 20px">
+        <h3 class="text-center">{{fg.label}} - {{ getDayEnglish(fg.label) }}</h3>
+        <app-home-flight-table [timetables]="fg.timetables"></app-home-flight-table>
+      </div>
+    </div>
+
+    <div *ngIf="timetablesGrouped && timetablesGrouped.length == 0 && loaded" style="text-align: center">
       <i class="icon-airplane" style="font-size: 80px; color:#eee"></i>
       <h2 class="text-primary">Aucun vol trouvé</h2>
     </div>
