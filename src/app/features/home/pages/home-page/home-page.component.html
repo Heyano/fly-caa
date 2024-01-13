@@ -3,18 +3,24 @@
 
   <div class="col-md-12" style="padding: 0 !important;">
     <div style="text-align: right">
-      <button [disabled]="loading"  (click)="importPdf()" class="btn btn-md btn-danger">
-        <span *ngIf="loading" class="spinner-border" style="width:15px; height: 15px">...</span>
-        Importer en PDF
+      <button [disabled]="loading"  (click)="downloadMergedPdf()" class="btn btn-md btn-danger">
+        <div style="display: inline-flex">
+          <div *ngIf="loading" class="loader"></div>
+          <div style="margin-left:10px">Exporter l'horaire en PDF</div>
+        </div>
       </button>
     </div>
 
-    <div #dataToExport id="dataToExport">
-      <div *ngFor="let fg of timetablesGrouped" style="margin-top: 20px">
-        <h3 class="text-center">{{fg.label}} - {{ getDayEnglish(fg.label) }}</h3>
-        <app-home-flight-table [timetables]="fg.timetables"></app-home-flight-table>
+
+      <div  *ngFor="let fg of timetablesGrouped, let index = index" id="dataToExport_{{fg.label}}" style="margin-top: 20px">
+        <div #dataToExport1>
+
+          <h3 class="text-center">{{fg.label}} - {{ getDayEnglish(fg.label) }}</h3>
+          <app-home-flight-table [timetables]="fg.timetables"></app-home-flight-table>
+        </div>
+
       </div>
-    </div>
+
 
     <div *ngIf="timetablesGrouped && timetablesGrouped.length == 0 && loaded" style="text-align: center">
       <i class="icon-airplane" style="font-size: 80px; color:#eee"></i>

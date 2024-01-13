@@ -1,11 +1,27 @@
 <div class="container">
   <div class="row" style="margin: 40px 0; align-items: center">
-    <div class="col-md-12" style="text-align: end">
+    <div class="col-md-5">
       <div>Filtrer par situation du vol</div>
       <p-dropdown [options]="['Tout','J-1','J-J','J+1']"
                   [(ngModel)]="situationFlight"
                   (ngModelChange)="selectFilter()"
-                   [showClear]="true" ></p-dropdown>
+                  [showClear]="true" ></p-dropdown>
+    </div>
+
+    <div class="col-md-4" style="text-align: end">
+
+
+    </div>
+    <div class="col-md-3">
+      <div style="text-align: end">
+        <button style="margin-top: 22px" [disabled]="loading"  (click)="downloadMergedPdf()" class="btn btn-md btn-danger">
+          <div style="display: inline-flex">
+            <div *ngIf="loading" class="loader"></div>
+            <div style="margin-left:10px">Exporter l'horaire en PDF</div>
+          </div>
+        </button>
+
+      </div>
 
     </div>
 
@@ -40,7 +56,7 @@
               <td>{{flight.departureDateReal | date: 'dd-MM-yyyy'}} {{flight.departureTimeReal}}</td>
               <td>{{flight.arrivalDateReal | date: 'dd-MM-yyyy'}} {{flight.arrivalTimeReal}}</td>
               <td>{{flight.statutFlight}}</td>
-              <td>{{flight.situationFlight}}</td>
+              <td>{{flight.situationFlight == 'J1' ? 'J+1' : flight.situationFlight}}</td>
             </tr>
           </ng-container>
         </ng-container>

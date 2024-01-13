@@ -6,6 +6,7 @@ import {
   QueryResultsModel,
 } from 'src/app/core/models/query-result.model';
 import { URL_API } from 'src/app/core/routes/backend.root';
+import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root',
@@ -71,5 +72,14 @@ export class MainService {
    */
   getOne(id: string, url: string): Observable<QueryResultModel> {
     return this.http.get<QueryResultModel>(URL_API.baseUrl + url + '/' + id);
+  }
+
+  downloadFile(fileUrl: string, fileName: string): void {
+    this.http.get(fileUrl, { responseType: 'blob' }).subscribe((response: any) => {
+      const blob = new Blob([response], { type: response.type });
+
+      // Utilisez FileSaver pour sauvegarder le fichier localement
+      saveAs(blob, fileName);
+    });
   }
 }
